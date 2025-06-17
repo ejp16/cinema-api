@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GenreController;
+use App\Http\Controllers\MovieController;
 use App\Http\Controllers\PeliculaController;
 use App\Http\Controllers\SalaController;
 use App\Http\Controllers\UserController;
@@ -24,16 +27,45 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 }); */
 
+
+Route::group([
+
+    'middleware' => ['auth',] 
+    
+
+], function ($router) {
+
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/refresh', [AuthController::class, 'refresh']);
+    Route::post('/me', [AuthController::class, 'me']);
+
+});
+
+Route::group([
+    'middleware' => ['auth', 'employee']
+], function ($router) {
+
+});
+
+Route::post('/login', [AuthController::class, 'login']);
+
+
+Route::post('/create_movie', [MovieController::class, 'createMovie']);
+Route::post('/update_movie/{id}', [MovieController::class, 'updateMovie']);
+Route::get('/movies', [MovieController::class, 'listMovies']);
+
+Route::post('/create_genre', [GenreController::class, 'createGenre']);
+
 //Route::resource('/user', UserController::class);
 //Usuario
-Route::post('/user', [UserController::class, 'login']);
-Route::get('/user/{id}', [UserController::class, 'getUser']);
-Route::post('/user/cambiarPassword', [UserController::class, 'cambiarPassword']);
-Route::get('/user/info/{id}', [UserController::class, 'getUserInfo']);
-Route::post('/user/store', [UserController::class, 'storeUser']);
-Route::post('user/storeInfo', [UserController::class, 'storeInfo']);
-Route::put('/user/update/{id}', [UserController::class, 'update']);
-Route::delete('user/delete/{id}', [UserController::class, 'delete']);
+Route::get('/user', [UserController::class, 'indexCustomers'])->middleware('auth:api');
+Route::post('/register', [UserController::class, 'store']);
+
+
+
+//Roles
+Route::get('/role', [\App\Http\Controllers\RoleController::class, 'index']);
+Route::post('/role', [\App\Http\Controllers\RoleController::class, 'store']);
 
 //Salas de cine
 Route::post('/salas', [SalaController::class, 'store']);

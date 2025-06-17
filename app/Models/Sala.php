@@ -19,7 +19,7 @@ class Sala extends Model
         'hasta' => 'datetime:H:i'
     ];
 
-    public function user(): BelongsTo 
+    public function userRole(): BelongsTo 
     {
         return $this->belongsTo(Usuario::class);
     }
