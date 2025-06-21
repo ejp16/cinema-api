@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActorController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MovieController;
@@ -44,8 +45,14 @@ Route::group([
 Route::group([
     'middleware' => ['auth', 'employee']
 ], function ($router) {
+    Route::get('/actors', [ActorController::class, 'showActors']);
+    Route::post('/create_actor', [ActorController::class, 'addActor']);
+    Route::put('/update_actor', [ActorController::class, 'updateActor']);
+    Route::post('/delete_actor', [ActorController::class, 'deleteActors']);
 
 });
+
+
 
 Route::post('/login', [AuthController::class, 'login']);
 
