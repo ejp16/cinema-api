@@ -5,11 +5,15 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\PeliculaController;
+use App\Http\Controllers\ProjectionController;
 use App\Http\Controllers\SalaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReservacionController;
+use App\Http\Controllers\SeatController;
+use App\Http\Controllers\TheaterRoomController;
 use App\Models\Pelicula;
 use App\Models\Reservacion;
+use App\Models\Theater;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -52,6 +56,30 @@ Route::group([
 
 });
 
+Route::group([
+    'middleware' => ['auth', 'manager']
+], function($router){
+    Route::get('/projections', [ProjectionController::class, 'projections']);
+    Route::post('/projection', [ProjectionController::class, 'addProjection']);
+    Route::put('/projection/{id}', [ProjectionController::class, 'updateProjection']);
+    Route::delete('/projection', [ProjectionController::class, 'removeProjection']);
+
+    Route::get('/theaters', [TheaterRoomController::class, 'theaters']);
+    Route::post('theater', [TheaterRoomController::class, 'addTheater']);
+
+    Route::get('/projections', [ProjectionController::class, 'projections']);
+    Route::post('/projection', [ProjectionController::class, 'addProjection']);
+    Route::put('/projection/{id}', [ProjectionController::class, 'updateProjection']);
+    Route::delete('/projection', [ProjectionController::class, 'removeProjection']);
+
+    Route::post('/seat', [SeatController::class, 'addSeat']);
+    Route::put('/seat/{id}', [SeatController::class, 'updateSeat']);
+    Route::delete('/seat/{id}', [SeatController::class, 'removeSeat']);
+});
+
+
+Route::get('/seats', [SeatController::class, 'seats']);
+
 
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -66,7 +94,7 @@ Route::post('/create_genre', [GenreController::class, 'createGenre']);
 //Route::resource('/user', UserController::class);
 //Usuario
 Route::get('/user', [UserController::class, 'indexCustomers'])->middleware('auth:api');
-Route::post('/register', [UserController::class, 'store']);
+Route::post('/register', [UserController::class, 'createEmployee']);
 
 
 

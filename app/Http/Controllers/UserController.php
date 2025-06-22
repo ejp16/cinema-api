@@ -70,10 +70,8 @@ class UserController extends Controller
             'password' => $validated['password'],
         ]);
 
-        RoleUser::create([
-            'user_id' => $user->id,
-            'role_id' => 2
-        ]);
+        $user->roles()->attach(2);
+
 
         return response()->json(
             [   

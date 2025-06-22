@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('functions', function (Blueprint $table) {
+        Schema::create('proyections', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('movie_id');
-            $table->unsignedBigInteger('theater_id');
+            $table->unsignedBigInteger(('theater_id'));
+            $table->foreign('theater_id')->references('id')->on('theaters_room');
             $table->dateTime('start_date');
         });
     }

@@ -18,4 +18,9 @@ class Movie extends Model
         return $this->belongsTo(Genre::class);
     }
 
+    public function projection()
+    {
+        return $this->belongsToMany(Theater::class, 'projections');
+    }
+
 }

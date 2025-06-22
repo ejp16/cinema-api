@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Seat extends Model
+class Projection extends Model
 {
     use HasFactory;
 
-    public $timestamps = false;
+    protected $fillable = ['movie_id', 'theater_id', 'start_date'];
 
-    protected $fillable = ['theater_id', 'row', 'number', 'type'];
+    public $timestamps = false;
 }
