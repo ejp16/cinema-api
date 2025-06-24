@@ -71,7 +71,10 @@ Route::group([
     Route::delete('/movie/{id}', [MovieController::class, 'removeMovie']);
 
     
+    Route::get('/genres', [GenreController::class, 'listGenres']);
     Route::post('/genre', [GenreController::class, 'createGenre']);
+    Route::put('/genre', [GenreController::class, 'updateGenre']);
+    Route::delete('/genre', [GenreController::class, 'removeGenre']);
 
 });
 

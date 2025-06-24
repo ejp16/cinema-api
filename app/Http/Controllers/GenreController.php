@@ -20,4 +20,16 @@ class GenreController extends Controller
 
         return response()->json([], 201);
     }
+
+    public function updateGenre(Request $request, string $id)
+    {
+        $genre = Genre::find($id);
+        $genre->update( $request->all() );
+
+    }
+
+    public function removeGenre(string $id)
+    {
+        Genre::destroy($id);
+    }
 }
