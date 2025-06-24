@@ -66,7 +66,7 @@ class MovieController extends Controller
 
     }
 
-    public function deleteMovie(Request $request, string $id): JsonResponse
+    public function removeMovie(Request $request, string $id): JsonResponse
     {
         Movie::destroy($id);
         return response()->json(['Description' => 'Movie deleted successfully']);

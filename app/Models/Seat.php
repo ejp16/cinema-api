@@ -12,4 +12,9 @@ class Seat extends Model
     public $timestamps = false;
 
     protected $fillable = ['theater_id', 'row', 'number', 'type'];
+
+    public function reservation()
+    {
+        return $this->belongsToMany(Reservation::class, 'reservation_seat');
+    }
 }

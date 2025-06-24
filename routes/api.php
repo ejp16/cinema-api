@@ -9,6 +9,7 @@ use App\Http\Controllers\ProjectionController;
 use App\Http\Controllers\SalaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReservacionController;
+use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SeatController;
 use App\Http\Controllers\TheaterRoomController;
 use App\Models\Pelicula;
@@ -33,9 +34,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 }); */
 
 
+
+
+
+Route::post('/login', [AuthController::class, 'login']);
+
+
 Route::group([
 
-    'middleware' => ['auth',] 
+    'middleware' => ['auth'] 
     
 
 ], function ($router) {
@@ -44,15 +51,27 @@ Route::group([
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::post('/me', [AuthController::class, 'me']);
 
+    
+    Route::get('/seats', [SeatController::class, 'seats']);
+    Route::get('/occuped_seats', [SeatController::class, 'ocuppedSeats']);
+
 });
 
 Route::group([
     'middleware' => ['auth', 'employee']
 ], function ($router) {
     Route::get('/actors', [ActorController::class, 'showActors']);
-    Route::post('/create_actor', [ActorController::class, 'addActor']);
-    Route::put('/update_actor', [ActorController::class, 'updateActor']);
-    Route::post('/delete_actor', [ActorController::class, 'deleteActors']);
+    Route::post('/actor', [ActorController::class, 'addActor']);
+    Route::put('/actor/{id}', [ActorController::class, 'updateActor']);
+    Route::delete('/actor/{id}', [ActorController::class, 'deleteActors']);
+    
+    Route::get('/movies', [MovieController::class, 'listMovies']);
+    Route::post('/movie', [MovieController::class, 'createMovie']);
+    Route::put('/movie/{id}', [MovieController::class, 'updateMovie']);
+    Route::delete('/movie/{id}', [MovieController::class, 'removeMovie']);
+
+    
+    Route::post('/genre', [GenreController::class, 'createGenre']);
 
 });
 
@@ -62,59 +81,22 @@ Route::group([
     Route::get('/projections', [ProjectionController::class, 'projections']);
     Route::post('/projection', [ProjectionController::class, 'addProjection']);
     Route::put('/projection/{id}', [ProjectionController::class, 'updateProjection']);
-    Route::delete('/projection', [ProjectionController::class, 'removeProjection']);
+    Route::delete('/projection/{id}', [ProjectionController::class, 'removeProjection']);
 
     Route::get('/theaters', [TheaterRoomController::class, 'theaters']);
     Route::post('theater', [TheaterRoomController::class, 'addTheater']);
-
-    Route::get('/projections', [ProjectionController::class, 'projections']);
-    Route::post('/projection', [ProjectionController::class, 'addProjection']);
-    Route::put('/projection/{id}', [ProjectionController::class, 'updateProjection']);
-    Route::delete('/projection', [ProjectionController::class, 'removeProjection']);
+    Route::put('theater/{id}', [TheaterRoomController::class, 'updateTheater']);
+    Route::delete('theater/{id}', [TheaterRoomController::class, 'removeTheater']);
 
     Route::post('/seat', [SeatController::class, 'addSeat']);
     Route::put('/seat/{id}', [SeatController::class, 'updateSeat']);
     Route::delete('/seat/{id}', [SeatController::class, 'removeSeat']);
+
+    Route::get('/reservations', [ReservationController::class, 'reservations']);
+    Route::post('/reservation', [ReservationController::class, 'addReservation']);
+
+    
+    Route::post('/register', [UserController::class, 'createEmployee']);
 });
 
 
-Route::get('/seats', [SeatController::class, 'seats']);
-
-
-
-Route::post('/login', [AuthController::class, 'login']);
-
-
-Route::post('/create_movie', [MovieController::class, 'createMovie']);
-Route::post('/update_movie/{id}', [MovieController::class, 'updateMovie']);
-Route::get('/movies', [MovieController::class, 'listMovies']);
-
-Route::post('/create_genre', [GenreController::class, 'createGenre']);
-
-//Route::resource('/user', UserController::class);
-//Usuario
-Route::get('/user', [UserController::class, 'indexCustomers'])->middleware('auth:api');
-Route::post('/register', [UserController::class, 'createEmployee']);
-
-
-
-//Roles
-Route::get('/role', [\App\Http\Controllers\RoleController::class, 'index']);
-Route::post('/role', [\App\Http\Controllers\RoleController::class, 'store']);
-
-//Salas de cine
-Route::post('/salas', [SalaController::class, 'store']);
-Route::get('/salas', [SalaController::class, 'index']);
-Route::get('/sala/delete/{id}', [SalaController::class, 'destroy']);
-Route::get('sala/{id}', [SalaController::class, 'show']);
-Route::post('/sala/update/{id}', [SalaController::class, 'update']);
-
-//Peliculas
-Route::post('/pelicula', [PeliculaController::class, 'store']);
-Route::get('/peliculas', [PeliculaController::class, 'index']);
-Route::get('/pelicula/{id}', [PeliculaController::class, 'show']);
-Route::post('/pelicula/delete/{id}', [PeliculaController::class, 'delete']);
-Route::put('/pelicula/{id}', [PeliculaController::class, 'update']);
-
-//Reservacion
-Route::post('/reservacion', [ReservacionController::class, 'reservar']);

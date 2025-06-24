@@ -10,7 +10,7 @@ class SeatController extends Controller
 
     public function seats()
     {
-        return Seat::all();
+        return Seat::all()->load('reservation');
     }
 
     public function addSeat(Request $request)
@@ -38,15 +38,8 @@ class SeatController extends Controller
         Seat::destroy($id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function ocuppedSeats()
     {
-        //
+        return Seat::whereHas('reservations')->get();
     }
 }
