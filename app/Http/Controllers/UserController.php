@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
 
-    /* Employees route methods */
 
     public function indexCustomers()
     {
@@ -36,10 +35,7 @@ class UserController extends Controller
             'password' => $validated['password'],
         ]);
 
-        RoleUser::create([
-            'user_id' => $user->id,
-            'role_id' => 1
-        ]);
+        $user->roles()->attach(1);
 
         return response()->json(
             [   
@@ -50,7 +46,6 @@ class UserController extends Controller
         );
     }
 
-    /* Manager route methods */
 
     public function indexEmployees()
     {

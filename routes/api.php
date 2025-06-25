@@ -39,6 +39,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/login', [AuthController::class, 'login']);
 
+Route::post('/register', [UserController::class, 'createCustomer']);
 
 Route::group([
 
@@ -81,6 +82,9 @@ Route::group([
 Route::group([
     'middleware' => ['auth', 'manager']
 ], function($router){
+
+    Route::post('/create_employee', [UserController::class, 'createEmployee']);
+
     Route::get('/projections', [ProjectionController::class, 'projections']);
     Route::post('/projection', [ProjectionController::class, 'addProjection']);
     Route::put('/projection/{id}', [ProjectionController::class, 'updateProjection']);
@@ -99,7 +103,6 @@ Route::group([
     Route::post('/reservation', [ReservationController::class, 'addReservation']);
 
     
-    Route::post('/register', [UserController::class, 'createEmployee']);
 });
 
 
